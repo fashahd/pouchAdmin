@@ -49,33 +49,37 @@ class Layout {
     
 	public function headerlogin()
 	{
-        $ret = "
+        $ret = '
             <head>
-                <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1'>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-                <meta name='msapplication-tap-highlight' content='no'>
-                <meta name='description' content='My Poch adalah perusahaan yang bergerak di bidang payment channel dan payment gateway yang mengutamakan kemudahan, keamanan, kecepatan, dan fleksibilitas dalam setiap transaksi'>
-                <meta name='keywords' content='My Pouch, pouch, payment gateway, payment channel'>
-                <link rel='icon' href='".base_url()."appsources/mypouch-favicon.png' sizes='32x32'>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <title>Admin | My Pouch</title>
+                <!-- Tell the browser to be responsive to screen width -->
+                <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+                
                 <!-- Favicons-->
-                <link rel='apple-touch-icon-precomposed' href='".base_url()."appsources/mypouch-favicon.png'>
-                <title>My Pouch</title>
-                
-                ".link_tag('appsources/css/themes/semi-dark-menu/materialize.css')."
-                
-                ".link_tag('appsources/css/themes/semi-dark-menu/style.css')."
-                
-                ".link_tag('appsources/css/custom/custom.css')."
-                
-                ".link_tag('appsources/css/layouts/page-center.css')."
-                
-                ".link_tag('appsources/vendors/perfect-scrollbar/perfect-scrollbar.css')."
-                
-                ".link_tag('appsources/vendors/sweetalert/dist/sweetalert.css')."              
-                
-            </head>
-        ";
+                <link rel="apple-touch-icon-precomposed" href="'.base_url().'appsources/mypouch-favicon.png">
+                <!-- Bootstrap 3.3.7 -->
+                <link rel="stylesheet" href="'.base_url().'/appsources/bower_components/bootstrap/dist/css/bootstrap.min.css">
+                <!-- Font Awesome -->
+                <link rel="stylesheet" href="'.base_url().'/appsources/bower_components/font-awesome/css/font-awesome.min.css">
+                <!-- Ionicons -->
+                <link rel="stylesheet" href="'.base_url().'/appsources/bower_components/Ionicons/css/ionicons.min.css">
+                <!-- Theme style -->
+                <link rel="stylesheet" href="'.base_url().'/appsources/dist/css/AdminLTE.min.css">
+                <!-- iCheck -->
+                <link rel="stylesheet" href="'.base_url().'/appsources/plugins/iCheck/square/blue.css">
+            
+                <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+                <!-- WARNING: Respond.js doesnt work if you view the page via file:// -->
+                <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+                <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                <![endif]-->
+            
+                <!-- Google Font -->
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+            </head>';
 
         return $ret;
     }
@@ -84,12 +88,9 @@ class Layout {
 	{
         $ret = "
             <!-- Module Login -->
-            <script src='".base_url()."appsources/vendors/jquery-3.2.1.min.js'></script>
-            <script src='".base_url()."appsources/js/materialize.min.js'></script>
-            <script src='".base_url()."appsources/vendors/perfect-scrollbar/perfect-scrollbar.min.js'></script>
-            <script src='".base_url()."appsources/js/plugins.js'></script>
-            <script src='".base_url()."appsources/js/custom-script.js'></script>
-            <script src='".base_url()."appsources/vendors/sweetalert/dist/sweetalert.min.js'></script>
+            <script src='".base_url()."/appsources/bower_components/jquery/dist/jquery.min.js'></script>
+            <!-- Bootstrap 3.3.7 -->
+            <script src='".base_url()."/appsources/bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
             
             <script src='".base_url()."appsources/pouch/default.js'></script>
             <script src='".base_url()."appsources/pouch/module/login.js'></script>

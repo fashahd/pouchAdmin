@@ -27,29 +27,10 @@ class Auth extends MX_Controller {
 		$this->load->view('register');
 	}
 
-	function createUser(){
-		$this->load->Model("ModelAuth");
-		if(!isset($_POST)){
-			echo "Isi Data Terlebih Dahulu";
-			return;
-		}
-		$email 		= $_POST["email"];
-		$password	= $this->aes->encrypt_aes256($_POST["password"]);
-		$name 		= $_POST["name"];
-		$phone 		= $_POST["phone"];
-		$business_name 		= $_POST["business_name"];
-		$business_email 	= $_POST["business_email"];
-
-		$create 	= $this->ModelAuth->createUser($email,$password,$name,$phone,$business_name,$business_email);
-
-		echo $create;
-		return;
-	}
-
 	function validation(){
 		$this->load->Model("ModelAuth");
-		if(!isset($_POST["email"])){
-			echo "Silahkan Isi Email anda !";
+		if(!isset($_POST["username"])){
+			echo "Silahkan Isi Username anda !";
 			return;
 		}
 
@@ -58,7 +39,7 @@ class Auth extends MX_Controller {
 			return;
 		}
 		
-		$auth 	= $this->ModelAuth->validation($_POST["email"],$_POST["password"]);
+		$auth 	= $this->ModelAuth->validation($_POST["username"],$_POST["password"]);
 		// echo $auth;
 		// return;
 		$data = json_decode($auth, true);
@@ -68,11 +49,9 @@ class Auth extends MX_Controller {
 		}
 
 		if($data["status"] == "sukses"){			
-			$this->session->set_userdata("sessUserID",$data["userID"]);
-			$this->session->set_userdata("sessEmail",$data["email"]);
-			$this->session->set_userdata("sessCompanyID",$data["company_id"]);
-			$this->session->set_userdata("sessCompanyLogo",$data["company_logo"]);
-			$this->session->set_userdata("sessCompanyName",$data["company_name"]);
+			$this->session->set_userdata("username",$data["username"]);
+			$this->session->set_userdata("full_name",$data["full_name"]);
+			$this->session->set_userdata("role",$data["role"]);
 			echo "Sukses";
 			return;
 		}
