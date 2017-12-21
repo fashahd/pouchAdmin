@@ -23,10 +23,6 @@ class Auth extends MX_Controller {
 		$this->load->view('login');
 	}
 
-	function register(){
-		$this->load->view('register');
-	}
-
 	function validation(){
 		$this->load->Model("ModelAuth");
 		if(!isset($_POST["username"])){
@@ -59,9 +55,9 @@ class Auth extends MX_Controller {
 	}
 
 	function signout(){
-		$this->session->unset_userdata("sessUSerID");
-		$this->session->unset_userdata("sessEmail");
+		$this->session->unset_userdata("username");
+		$this->session->unset_userdata("full_name");
 
-		header("location:auth/login");
+		header("location:".base_url()."auth/login");
 	}
 }
