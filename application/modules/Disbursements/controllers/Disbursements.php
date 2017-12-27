@@ -26,40 +26,11 @@ class Disbursements extends MX_Controller {
 			return;
 		}
 		$this->load->model("ModelGlobal");
+		$this->load->library('pagination');
 	}
 
 	public function index()
-	{
-		//konfigurasi pagination
-        $config['base_url'] 	= site_url('disbursement/index'); //site url
-        $config['total_rows'] 	= $this->ModelGlobal->getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank); //total row
-        $config['per_page'] 	= 5;  //show record per halaman
-        $config["uri_segment"] 	= 3;  // uri parameter
-        $choice = $config["total_rows"] / $config["per_page"];
-		$config["num_links"] 	= floor($choice);
-		 // Membuat Style pagination untuk BootStrap v4
-		 $config['first_link']       = 'First';
-		 $config['last_link']        = 'Last';
-		 $config['next_link']        = 'Next';
-		 $config['prev_link']        = 'Prev';
-		 $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
-		 $config['full_tag_close']   = '</ul></nav></div>';
-		 $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-		 $config['num_tag_close']    = '</span></li>';
-		 $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-		 $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-		 $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-		 $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-		 $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-		 $config['prev_tagl_close']  = '</span>Next</li>';
-		 $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-		 $config['first_tagl_close'] = '</span></li>';
-		 $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-		 $config['last_tagl_close']  = '</span></li>';
-
-		$this->pagination->initialize($config);
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		
+	{	
 		$dttm1 = date("Y-m-d");
 		$dttm2 = date("Y-m-d");
 		if($this->session->userdata("dttm1")){
@@ -71,11 +42,38 @@ class Disbursements extends MX_Controller {
 		$company_id = $this->session->userdata("company_id");
 		$status 	= $this->session->userdata("status");
 		$bank 		= $this->session->userdata("bank");
-		$data["optCompany"]	= $this->ModelGlobal->getOptCompany();
-		$data["transaction"] = $this->ModelGlobal->getTransaction($company_id,$status,$dttm1,$dttm2,$bank,$config["per_page"], $data['page']);
+		
+		// init params
+        // init params
+        $params = array();
+        $limit_per_page = 10;
+        $page = ($this->uri->segment(3)) ? ($this->uri->segment(3) - 1) : 0;
+        $total_records = $this->ModelGlobal->getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank);
+		
+
+		$data["optCompany"]		= $this->ModelGlobal->getOptCompany();
+		$data["transaction"] 	= $this->ModelGlobal->getTransaction($company_id,$status,$dttm1,$dttm2,$bank,$limit_per_page, $page*$limit_per_page);
+		$config['base_url'] 	= base_url() . 'disbursements/index';
+		$config['total_rows'] 	= $total_records;
+		$config['per_page'] 	= $limit_per_page;
+		$config["uri_segment"] 	= 3;
+		$config['use_page_numbers'] = TRUE;
+		$config['reuse_query_string'] = TRUE;
+		$config['num_links'] 	= $total_records;
+		$config['cur_tag_open'] = '&nbsp;<a class="current">';
+		$config['cur_tag_close'] = '</a>';
+		$config['next_link'] 	= 'Next';
+		$config['prev_link'] 	= 'Previous';		
+		 
+		$this->pagination->initialize($config);
+		 
+		// build paging links
+		$data["links"] = $this->pagination->create_links();
 		$data["dttm1"]	= $dttm1;
 		$data["dttm2"]	= $dttm2;
 		$data["module"]	= "Disbursement";
+		$str_links = $this->pagination->create_links();
+		$data["links"] = explode('&nbsp;',$str_links );
 		$this->layout->content('index',$data);
 	}
 }

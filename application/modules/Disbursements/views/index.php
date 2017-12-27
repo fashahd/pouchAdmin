@@ -38,26 +38,41 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <select class="form-control select2" style="width: 100%;">
-                                <option selected="selected">All Company</option>
+                                <option value="" selected="selected">-- All Company --</option>
                                 <?=$optCompany?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <select class="form-control select2" style="width: 100%;">
-                                <option value='pending' selected="selected">Pending</option>
+                                <option value='' selected>-- Status --</option>
+                                <option value='pending'>Pending</option>
                                 <option value='success'>Success</option>
                                 <option value='failed'>Failed</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <select class="form-control select2" style="width: 100%;">
-                                <option selected="selected">BCA</option>
+                                <option value='' selected>-- Bank --</option>
+                                <option>BCA</option>
                                 <option>Mandiri</option>
                                 <option>BRI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <select class="form-control select2" style="width: 100%;">
+                                <option value='' selected>-- Page --</option>
+                                <option>10</option>
+                                <option>50</option>
+                                <option>100</option>
+                                <option>200</option>
+                                <option>500</option>
+                                <option>1000</option>
                             </select>
                         </div>
                     </div>
@@ -84,11 +99,9 @@
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">&raquo;</a></li>
+                    <?php foreach ($links as $link) {
+                        echo "<li>". $link."</li>";
+                        } ?>
                     </ul>
                 </div>
             </div>
