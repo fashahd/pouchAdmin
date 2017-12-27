@@ -67,34 +67,18 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Reference</th>
+                                <th>#</th>
                                 <th>Date Uploaded</th>
-                                <th>Uploader</th>
-                                <th>Qty Transaction</th>
-                                <th>Total</th>
+                                <th>Company</th>
+                                <th>Amount</th>
+                                <th>Bank</th>
+                                <th>Account Name</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tr>
-                            <td>1.</td>
-                            <td>Update software</td>
-                            <td>
-                                <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-red">55%</span></td>
-                        </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td>Clean database</td>
-                            <td>
-                                <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-yellow">70%</span></td>
-                        </tr>
+                        <tbody>
+                            <?=$transaction?>
+                        </tbody>
                     </table>
                 </div>
                 <!-- /.box-body -->
