@@ -13,6 +13,7 @@
             return $optCompany;
         }
 
+<<<<<<< HEAD
         function getTransaction($company_id,$status,$dttm1,$dttm2,$bank){
             $vdt    = $dttm1." 00:00:00";
             $vdt2   = $dttm2." 23:59:59";
@@ -29,6 +30,54 @@
                             <td>$row->reference</td>
                         </tr>
                     ";
+=======
+        function getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank){
+            if($status == ""){
+                $status = "pending";
+            }
+            $vdt    = $dttm1." 00:00:00";
+            $vdt2   = $dttm2." 23:59:59";
+            $sql    = "SELECT a.*, b.*, c.* FROM `pouch_mastertransactiondetail` as a
+                        LEFT JOIN pouch_mastertransaction as b on b.transaction_id = a.transaction_id
+                        LEFT JOIN pouch_mastercompanydata as c on c.company_id = b.company_id
+                        WHERE a.`status` = ? AND a.transaction_date >= ?
+                        AND a.transaction_date <= ?";
+                        // echo $company_id.$status.$bank.$vdt.$vdt2;
+            $query  = $this->db->query($sql,array($status,$vdt,$vdt2));
+
+            return $query->num_rows();
+        }
+
+        function getTransaction($company_id,$status,$dttm1,$dttm2,$bank,$limit,$start){
+            if($status == ""){
+                $status = "pending";
+            }
+            $vdt    = $dttm1." 00:00:00";
+            $vdt2   = $dttm2." 23:59:59";
+            $sql    = "SELECT a.*, b.*, c.* FROM `pouch_mastertransactiondetail` as a
+                        LEFT JOIN pouch_mastertransaction as b on b.transaction_id = a.transaction_id
+                        LEFT JOIN pouch_mastercompanydata as c on c.company_id = b.company_id
+                        WHERE a.`status` = ? AND a.transaction_date >= ?
+                        AND a.transaction_date <= ? LIMIT $start, $limit";
+                        // echo $company_id.$status.$bank.$vdt.$vdt2;
+            $query  = $this->db->query($sql,array($status,$vdt,$vdt2));
+            $transaction = "";
+            if($query->num_rows()>0){
+                $no = $start + 1;
+                foreach($query->result() as $row){
+                    $transaction .= "
+                        <tr>
+                            <td>$no</td>
+                            <td>$row->transaction_date</td>
+                            <td>$row->company_name</td>
+                            <td>".number_format($row->amount)."</td>
+                            <td>$row->bank_code</td>
+                            <td>$row->account_holder_name</td>
+                            <td>$row->status</td>
+                        </tr>
+                    ";
+                    $no++;
+>>>>>>> 2e6e62f3eb3239dad873312445ae62dbb26ed64e
                 }
             }
             return $transaction;
