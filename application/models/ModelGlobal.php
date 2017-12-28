@@ -1,36 +1,64 @@
 <?php
 	class ModelGlobal extends CI_Model {
 
-		function getOptCompany(){
+		function getOptCompany($company_id = null){
             $sql    =  "SELECT * FROM `pouch_mastercompanydata` ORDER BY company_name asc";
             $query  = $this->db->query($sql);
             $optCompany = "";
             if($query->num_rows()>0){
                 foreach($query->result() as $row){
-                    $optCompany .= "<option value='$row->company_id'>$row->company_name</option>";
+                    $slct = "";
+                    if($row->company_id == $company_id){
+                        $slct = "selected";
+                    }
+                    $optCompany .= "<option $slct value='$row->company_id'>$row->company_name</option>";
                 }
             }
             return $optCompany;
         }
 
-<<<<<<< HEAD
-        function getTransaction($company_id,$status,$dttm1,$dttm2,$bank){
-            $vdt    = $dttm1." 00:00:00";
-            $vdt2   = $dttm2." 23:59:59";
-            $sql    = "SELECT a.*, b.* FROM `pouch_mastertransactiondetail` as a
-                        LEFT JOIN pouch_mastertransaction as b on b.transaction_id = a.transaction_id
-                        WHERE a.company_id = ? AND a.`status` = ? AND a.bank_code = ? AND a.transaction_date >= ?
-                        AND a.transaction_date <= ?";
-            $query  = $this->db->query($sql,array($company_id,$status,$bank,$vdt,$vdt2));
-            $transaction = "";
+        function getOptLimitPage($limit = null){
+            $arrlimit = array("10","50","100","500","1000");
+            $optLimit = "";
+            for($i = 0; $i<count($arrlimit);$i++){
+                $slct = "";
+                if($arrlimit[$i] == $limit){
+                    $slct = "selected";
+                }
+                $optLimit .= "<option $slct value='$arrlimit[$i]'>$arrlimit[$i]</option>";
+            }
+            return $optLimit;
+        }
+        
+        function getOptBank($bank = null){
+            $sql    =  "SELECT * FROM `pouch_bankcode` ORDER BY bank_name asc";
+            $query  = $this->db->query($sql);
+            $optBank = "";
             if($query->num_rows()>0){
                 foreach($query->result() as $row){
-                    $transaction .= "
-                        <tr>
-                            <td>$row->reference</td>
-                        </tr>
-                    ";
-=======
+                    $slct = "";
+                    if($row->bank_code == $bank){
+                        $slct = "selected";
+                    }
+                    $optBank .= "<option $slct value='$row->bank_code'>$row->bank_name</option>";
+                }
+            }
+            return $optBank;
+        }
+        
+        function getOptStatus($status = null){
+            $arrStatus = array("pending"=>"Pending","approved"=>"Approved","success"=>"Success","failed"=>"Failed");
+            $optStatus = "";
+            foreach($arrStatus as $val => $status_name){
+                $slct = "";
+                if($val == $status){
+                    $slct = "selected";
+                }
+                $optStatus .= "<option $slct value='$val'>$status_name</option>";
+            }
+            return $optStatus;
+        }
+
         function getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank){
             if($status == ""){
                 $status = "pending";
@@ -63,24 +91,12 @@
             $query  = $this->db->query($sql,array($status,$vdt,$vdt2));
             $transaction = "";
             if($query->num_rows()>0){
-                $no = $start + 1;
-                foreach($query->result() as $row){
-                    $transaction .= "
-                        <tr>
-                            <td>$no</td>
-                            <td>$row->transaction_date</td>
-                            <td>$row->company_name</td>
-                            <td>".number_format($row->amount)."</td>
-                            <td>$row->bank_code</td>
-                            <td>$row->account_holder_name</td>
-                            <td>$row->status</td>
-                        </tr>
-                    ";
-                    $no++;
->>>>>>> 2e6e62f3eb3239dad873312445ae62dbb26ed64e
-                }
+                return $query->result();
+            }else{
+                return false;
             }
-            return $transaction;
         }
+
+
 	}
 ?>

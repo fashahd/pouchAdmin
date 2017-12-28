@@ -123,6 +123,7 @@ class Layout {
             <script src='".base_url()."appsources/dist/js/demo.js'></script>
             
             <script src='".base_url()."appsources/pouch/default.js'></script>
+            <script src='".base_url()."appsources/pouch/module/disbursement.js'></script>
         ";
 
         return $ret;

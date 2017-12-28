@@ -26,30 +26,6 @@ class Disbursements extends MX_Controller {
 			return;
 		}
 		$this->load->model("ModelGlobal");
-<<<<<<< HEAD
-	}
-
-	public function index()
-	{
-		$dttm1 = date("Y-m-d");
-		$dttm2 = date("Y-m-d");
-		if($this->session->userdata("dttm1")){
-			$dttm1 = $this->session->userdata("dttm1");
-		}
-		if($this->session->userdata("dttm2")){
-			$dttm1 = $this->session->userdata("dttm2");
-		}
-		$company_id = $this->session->userdata("company_id");
-		$status = $this->session->userdata("status");
-		$dttm1 = $this->session->userdata("dttm1");
-		$dttm2 = $this->session->userdata("dttm2");
-		$bank = $this->session->userdata("bank");
-		$data["optCompany"]	= $this->ModelGlobal->getOptCompany();
-		$data["transaction"] = $this->ModelGlobal->getTransaction($company_id,$status,$dttm1,$dttm2,$bank);
-		$data["dttm1"]	= $dttm1;
-		$data["dttm2"]	= $dttm2;
-		$data["module"]	= "Disbursement";
-=======
 		$this->load->library('pagination');
 	}
 
@@ -63,23 +39,23 @@ class Disbursements extends MX_Controller {
 		if($this->session->userdata("dttm2")){
 			$dttm2 	= $this->session->userdata("dttm2");
 		}
-		$company_id = $this->session->userdata("company_id");
+		$company_id = $this->session->userdata("company");
 		$status 	= $this->session->userdata("status");
 		$bank 		= $this->session->userdata("bank");
-		
-		// init params
-        // init params
-        $params = array();
-        $limit_per_page = 10;
-        $page = ($this->uri->segment(3)) ? ($this->uri->segment(3) - 1) : 0;
+		$limit 		= $this->session->userdata("limit");
+        $page 		= ($this->uri->segment(3)) ? ($this->uri->segment(3) - 1) : 0;
         $total_records = $this->ModelGlobal->getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank);
-		
 
-		$data["optCompany"]		= $this->ModelGlobal->getOptCompany();
-		$data["transaction"] 	= $this->ModelGlobal->getTransaction($company_id,$status,$dttm1,$dttm2,$bank,$limit_per_page, $page*$limit_per_page);
+		$data["optCompany"]		= $this->ModelGlobal->getOptCompany($company_id);
+		$data["optLimit"]		= $this->ModelGlobal->getOptLimitPage($limit);
+		$data["optBank"]		= $this->ModelGlobal->getOptBank($bank);
+		$data["optStatus"]		= $this->ModelGlobal->getOptStatus($status);
+		$data["dttm1"]	= $dttm1;
+		$data["dttm2"]	= $dttm2;
+		$data["page"]	= $page;
 		$config['base_url'] 	= base_url() . 'disbursements/index';
 		$config['total_rows'] 	= $total_records;
-		$config['per_page'] 	= $limit_per_page;
+		$config['per_page'] 	= $limit;
 		$config["uri_segment"] 	= 3;
 		$config['use_page_numbers'] = TRUE;
 		$config['reuse_query_string'] = TRUE;
@@ -87,18 +63,36 @@ class Disbursements extends MX_Controller {
 		$config['cur_tag_open'] = '&nbsp;<a class="current">';
 		$config['cur_tag_close'] = '</a>';
 		$config['next_link'] 	= 'Next';
-		$config['prev_link'] 	= 'Previous';		
+		$config['prev_link'] 	= 'Previous';
 		 
 		$this->pagination->initialize($config);
-		 
-		// build paging links
-		$data["links"] = $this->pagination->create_links();
-		$data["dttm1"]	= $dttm1;
-		$data["dttm2"]	= $dttm2;
+		
+	   // build paging links
+	  	$data["links"] = $this->pagination->create_links();
+	   	$str_links = $this->pagination->create_links();
+	   	$data["links"] = explode('&nbsp;',$str_links );
 		$data["module"]	= "Disbursement";
-		$str_links = $this->pagination->create_links();
-		$data["links"] = explode('&nbsp;',$str_links );
->>>>>>> 2e6e62f3eb3239dad873312445ae62dbb26ed64e
 		$this->layout->content('index',$data);
+	}
+
+	function getDisbursements(){
+		$dttm1 		= $_POST["dttm1"];
+		$dttm2 		= $_POST["dttm2"];
+		$company 	= $_POST["company"];
+		$status 	= $_POST["status"];
+		$bank 		= $_POST["bank"];
+		$page 		= $_POST["page"];
+		$limit 		= $_POST["limit"];
+		$this->session->set_userdata("dttm1",$dttm1);
+		$this->session->set_userdata("dttm2",$dttm2);
+		$this->session->set_userdata("status",$status);
+		$this->session->set_userdata("bank",$bank);
+		$this->session->set_userdata("company",$company);
+		$this->session->set_userdata("limit",$limit);		
+
+		$data["optCompany"]		= $this->ModelGlobal->getOptCompany();
+		$data["transaction"] 	= $this->ModelGlobal->getTransaction($company,$status,$dttm1,$dttm2,$bank,$limit, $page*$limit);
+		$data["start"] 			= $page*$limit;
+		$this->load->view("disburseData",$data);
 	}
 }
