@@ -44,7 +44,11 @@ class Disbursements extends MX_Controller {
 		$bank 		= $this->session->userdata("bank");
 		$limit 		= $this->session->userdata("limit");
         $page 		= ($this->uri->segment(3)) ? ($this->uri->segment(3) - 1) : 0;
-        $total_records = $this->ModelGlobal->getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank);
+		$total_records = $this->ModelGlobal->getTransactionTotal($company_id,$status,$dttm1,$dttm2,$bank);
+		
+		if($limit == ""){
+			$limit = 10;
+		}
 
 		$data["optCompany"]		= $this->ModelGlobal->getOptCompany($company_id);
 		$data["optLimit"]		= $this->ModelGlobal->getOptLimitPage($limit);

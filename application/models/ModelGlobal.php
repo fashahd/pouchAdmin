@@ -80,6 +80,9 @@
             if($status == ""){
                 $status = "pending";
             }
+            if($limit == ""){
+                $limit = 10;
+            }
             $vdt    = $dttm1." 00:00:00";
             $vdt2   = $dttm2." 23:59:59";
             $sql    = "SELECT a.*, b.*, c.* FROM `pouch_mastertransactiondetail` as a
