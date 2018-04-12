@@ -78,7 +78,7 @@
 
         function getTransaction($company_id,$status,$dttm1,$dttm2,$bank,$limit,$start){
             if($status == ""){
-                $status = "pending";
+                $status = "active";
             }
             if($limit == ""){
                 $limit = 10;
